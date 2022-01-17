@@ -33,13 +33,15 @@ const useStyles = makeStyles({
 const Pokedex = () => {
   const classes = useStyles();
   const [pokemonData, setPokemonData] = useState();
-  // navigate is new history.push. Used to render components depending on routes.
+  // navigate is new history.push. Used to render components depending on routes in
+  // react-router-dom v6.
   const navigate = useNavigate();
   // That's the way to get searchInputValue outta redux
   const { searchInputValue } = useSelector((state) => state.pokemonSearch);
   useEffect(() => {
     // axios is library for making API request. In this GET request we getting back all the
-    // data for pokemons, but we don't need that much data, so newPokemonData created.
+    // data for pokemons, but we don't need that much data, so newPokemonData created and then
+    // set as a pokemonData
     axios
       .get("https://pokeapi.co/api/v2/pokemon?limit=649")
       .then((response) => {
