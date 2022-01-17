@@ -6,13 +6,12 @@ import {
   CircularProgress,
   Grid,
   Typography,
-  Toolbar,
-  AppBar,
+  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { React, useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 const useStyles = makeStyles({
   pokemonCard: {
@@ -26,9 +25,10 @@ const useStyles = makeStyles({
 
 const Pokemon = () => {
   const params = useParams();
+  // We can get params value in any component, nested in <Routes></Routes>. Just like this.
   const { pokemonId } = params;
   const [pokemon, setPokemon] = useState(undefined);
-
+  const navigate = useNavigate();
   const classes = useStyles();
 
   useEffect(() => {
@@ -50,10 +50,6 @@ const Pokemon = () => {
 
     return (
       <>
-        <AppBar position="static" spacing={2}>
-          Pokedex
-          <Toolbar></Toolbar>
-        </AppBar>
         <Grid
           container
           spacing={0}
@@ -67,7 +63,13 @@ const Pokemon = () => {
                 <Typography align="center" variant="h2">
                   {capitalize(name)} <img src={logoUrl} alt="" />
                 </Typography>
-                <CardMedia component="img" image={imageUrl} />
+                <CardMedia allign="center">
+                  <img
+                    style={{ width: "400px", height: "400px" }}
+                    src={imageUrl}
+                    alt=""
+                  />
+                </CardMedia>
                 <Typography variant="h6">{`Height: ${height}`}</Typography>
                 <Typography variant="h6">{`Weight: ${weight}`}</Typography>
                 <Typography variant="h6">
@@ -78,6 +80,9 @@ const Pokemon = () => {
                     );
                   })}
                 </Typography>
+                <Button onClick={() => navigate("/")}>
+                  Return to main page
+                </Button>
               </CardContent>
             </Card>
           </Grid>

@@ -7,13 +7,13 @@ import {
   CardContent,
   CardMedia,
   capitalize,
-  Toolbar,
-  AppBar,
-  TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
+
+// useStyles is CSS, but for MUI, to use directly in the component
 
 const useStyles = makeStyles({
   pokemonCardsArea: {
@@ -33,10 +33,13 @@ const useStyles = makeStyles({
 const Pokedex = () => {
   const classes = useStyles();
   const [pokemonData, setPokemonData] = useState();
-  const [pokemonInput, changePokemonInput] = useState("");
+  // navigate is new history.push. Used to render components depending on routes.
   const navigate = useNavigate();
-
+  // That's the way to get searchInputValue outta redux
+  const { searchInputValue } = useSelector((state) => state.pokemonSearch);
   useEffect(() => {
+    // axios is library for making API request. In this GET request we getting back all the
+    // data for pokemons, but we don't need that much data, so newPokemonData created.
     axios
       .get("https://pokeapi.co/api/v2/pokemon?limit=649")
       .then((response) => {
@@ -79,23 +82,14 @@ const Pokedex = () => {
       </Grid>
     );
   };
-  const filterPokemons = (e) => {
-    const inputText = e.target.value;
-    changePokemonInput(inputText);
-  };
+
   return (
     <>
-      <AppBar position="static" spacing={2}>
-        Pokedex
-        <Toolbar>
-          <TextField label="Search for pokemon" onChange={filterPokemons} />
-        </Toolbar>
-      </AppBar>
       {pokemonData ? (
         <Grid container spacing={4} className={classes.pokemonCardsArea}>
           {Object.keys(pokemonData).map(
             (pokemonId) =>
-              pokemonData[pokemonId].name.includes(pokemonInput) &&
+              pokemonData[pokemonId].name.includes(searchInputValue) &&
               renderCards(pokemonId)
           )}
         </Grid>
