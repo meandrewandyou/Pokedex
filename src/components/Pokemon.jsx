@@ -3,23 +3,28 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CircularProgress,
   Grid,
   Typography,
-  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { React, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import colors from "../constatnts/colors";
+import { CircularProgress, Button } from "@mui/material";
 const useStyles = makeStyles({
   pokemonCard: {
-    minWidth: "400px",
+    width: "430px",
     marginTop: "3em",
+    borderRadius: "25px 100px",
   },
-  cardHeader: {
-    fontSize: "3rem",
+  progress: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    marginTop: "-100px",
+    marginLeft: "-100px",
   },
 });
 
@@ -44,6 +49,7 @@ const Pokemon = () => {
 
   const renderPokemonCard = () => {
     const { name, height, weight, sprites, types } = pokemon;
+    const mainType = types[0].type.name;
     const imageUrl = `https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${pokemonId}.svg`;
     const logoUrl =
       sprites.versions["generation-v"]["black-white"].animated.front_default;
@@ -57,15 +63,19 @@ const Pokemon = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Grid className={classes.pokemonCard} item xs={6}>
-            <Card>
-              <CardContent>
+          <Grid item xs={6}>
+            <Card
+              className={classes.pokemonCard}
+              style={{ backgroundColor: colors[mainType] }}
+            >
+              <CardContent align="center">
                 <Typography align="center" variant="h2">
-                  {capitalize(name)} <img src={logoUrl} alt="" />
+                  {capitalize(name)}{" "}
+                  <img style={{ zIndex: -1 }} src={logoUrl} alt="" />
                 </Typography>
                 <CardMedia allign="center">
                   <img
-                    style={{ width: "400px", height: "400px" }}
+                    style={{ width: "260px", height: "260px" }}
                     src={imageUrl}
                     alt=""
                   />
@@ -80,7 +90,11 @@ const Pokemon = () => {
                     );
                   })}
                 </Typography>
-                <Button onClick={() => navigate("/")}>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  onClick={() => navigate("/")}
+                >
                   Return to main page
                 </Button>
               </CardContent>
@@ -93,7 +107,13 @@ const Pokemon = () => {
 
   return (
     <>
-      {pokemon === undefined && <CircularProgress />}
+      {pokemon === undefined && (
+        <CircularProgress
+          color={"success"}
+          className={classes.progress}
+          size={200}
+        />
+      )}
       {pokemon === false && <Typography>Pokemon not found.</Typography>}
       {pokemon !== undefined && pokemon && renderPokemonCard()}
     </>
