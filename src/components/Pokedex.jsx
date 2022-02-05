@@ -7,7 +7,7 @@ import {
   CardMedia,
   capitalize,
 } from "@material-ui/core";
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, LinearProgress } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,6 +16,8 @@ import colors from "../constatnts/colors";
 import pokemonTypes from "../constatnts/pokemonTypes";
 import { setValue } from "../redux/slices/pokemonSearch";
 import { useDispatch } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 // useStyles is CSS, but for MUI, to use directly in the component
 
 const useStyles = makeStyles({
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
     paddingTop: "30px",
     paddingLeft: "15%",
     paddingRight: "15%",
+    width: "100%",
   },
   pokemonCard: {
     borderRadius: "25px 100px",
@@ -46,14 +49,40 @@ const useStyles = makeStyles({
 
 const Pokedex = () => {
   const classes = useStyles();
-  const [pokemonData, setPokemonData] = useState(undefined);
+  const [pokemonData, setPokemonData] = useState();
+
+  // Setting up states for InfiniteScroll
+  const [scrollData, setScrollData] = useState();
+  const [hasMoreValue, setHasMoreValue] = useState(true);
 
   // navigate is new history.push. Used to render components depending on routes in
   // react-router-dom v6.
   const navigate = useNavigate();
+
   // That's the way to get searchInputValue outta redux
   const { searchInputValue } = useSelector((state) => state.pokemonSearch);
   const dispatch = useDispatch();
+
+  // When user is close enough to the bottom of the page, this function gonna be triggered
+  // , new scrollData (data to be rendered) will be created
+  const loadScrollData = async () => {
+    try {
+      setScrollData(pokemonData.slice(0, scrollData.length + 8));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Handler function. Not only scrollData will be set up, but also hasMoreValue's value
+  // Loader depends on it's value (show loader/ not show loader)
+  const handleOnRowsScrollEnd = () => {
+    if (scrollData.length < pokemonData.length) {
+      setHasMoreValue(true);
+      loadScrollData();
+    } else {
+      setHasMoreValue(false);
+    }
+  };
 
   const fetchPrimaryPokemonData = async () => {
     try {
@@ -72,6 +101,8 @@ const Pokedex = () => {
             });
           });
           setPokemonData(newPokemonData);
+          // Let's set up primary array of items to render in InfiniteScroll
+          setScrollData(newPokemonData.slice(0, 8));
         });
     } catch (err) {
       console.log(err);
@@ -81,6 +112,7 @@ const Pokedex = () => {
   useEffect(() => {
     fetchPrimaryPokemonData();
   }, []);
+
   const renderCards = (pokemonIndex) => {
     const { name, id, imgUrl } = pokemonData[pokemonIndex];
     const mainType = pokemonTypes[id].type;
@@ -134,14 +166,44 @@ const Pokedex = () => {
 
   return (
     <>
-      {pokemonData ? (
+      {/* Conditional rendering of cards depends on SearchInputValue. If it's empty, 
+    we'll render scrollData, if not - we'll render matches from complete array of pokemons
+    , which is pokemonData */}
+      {searchInputValue ? (
+        pokemonData ? (
+          <>
+            <Grid container spacing={4} className={classes.pokemonCardsArea}>
+              {pokemonData.map(
+                (pokemon, index) =>
+                  pokemon.name.includes(searchInputValue) && renderCards(index)
+              )}
+            </Grid>
+          </>
+        ) : (
+          <CircularProgress
+            color={"success"}
+            className={classes.progress}
+            size={200}
+          />
+        )
+      ) : scrollData ? (
         <>
-          <Grid container spacing={4} className={classes.pokemonCardsArea}>
-            {pokemonData.map(
-              (pokemon, index) =>
-                pokemon.name.includes(searchInputValue) && renderCards(index)
-            )}
-          </Grid>
+          <InfiniteScroll
+            dataLength={scrollData.length}
+            next={handleOnRowsScrollEnd}
+            hasMore={hasMoreValue}
+            scrollThreshold={1}
+            loader={<LinearProgress />}
+            // Let's get rid of second scroll bar
+            style={{ overflow: "unset" }}
+          >
+            <Grid container spacing={4} className={classes.pokemonCardsArea}>
+              {scrollData.map(
+                (pokemon, index) =>
+                  pokemon.name.includes(searchInputValue) && renderCards(index)
+              )}
+            </Grid>
+          </InfiniteScroll>
         </>
       ) : (
         <CircularProgress
