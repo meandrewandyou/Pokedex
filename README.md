@@ -4,6 +4,15 @@
 
 <h3>Changelog:</h3>
 
+<h5>v.0.04 </h5>
+<ul>
+<li>MUI dialogue reg/login form added.</li>
+<li>Node.js + Express backend server added. Mongo database added. Now you can create user and kinda simulate login process by comparing user's input data and actual data in the db.
+All the actual profits of it are on the way. This version basically is a matter of checkpoint.
+</li>
+<li>Minor visual changes, footer has been added.</li>
+</ul>
+
 <h5>v.0.03 </h5>
 <ul>
 <li>Finally... InfinityScroll + MUI grid system are in the building 😅. </li>
