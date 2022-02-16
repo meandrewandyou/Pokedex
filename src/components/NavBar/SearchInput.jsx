@@ -2,7 +2,7 @@ import React from "react";
 import { TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { setValue } from "../redux/slices/pokemonSearch";
+import { setValue } from "../../redux/slices/pokemonSearch";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     marginBottom: "-20px",
     position: "relative",
     marginLeft: "auto",
-    marginRight: "20px",
+    marginRight: "",
   },
   searchIcon: {
     alignSelf: "flex-end",
@@ -41,7 +41,7 @@ const SearchInput = () => {
         label="Search for pokemon"
         onChange={filterPokemons}
         variant="standard"
-        InputLabelProps={{ style: { color: "pink" } }}
+        InputLabelProps={{ style: { color: "#E3BEC6" } }}
       />
     </div>
   );

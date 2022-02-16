@@ -15,7 +15,7 @@ import colors from "../constatnts/colors";
 import { CircularProgress, Button } from "@mui/material";
 const useStyles = makeStyles({
   pokemonCard: {
-    width: "430px",
+    width: "450px",
     marginTop: "3em",
     borderRadius: "25px 100px",
   },
@@ -70,8 +70,7 @@ const Pokemon = () => {
             >
               <CardContent align="center">
                 <Typography align="center" variant="h2">
-                  {capitalize(name)}{" "}
-                  <img style={{ zIndex: -1 }} src={logoUrl} alt="" />
+                  {capitalize(name)} <img src={logoUrl} alt="" />
                 </Typography>
                 <CardMedia allign="center">
                   <img

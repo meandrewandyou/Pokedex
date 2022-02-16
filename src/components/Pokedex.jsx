@@ -78,7 +78,9 @@ const Pokedex = () => {
   const handleOnRowsScrollEnd = () => {
     if (scrollData.length < pokemonData.length) {
       setHasMoreValue(true);
-      loadScrollData();
+      // I use setTimeout here to simulate server delay, so everyone can see this
+      // beautiful LinearProgress)
+      setTimeout(loadScrollData, 1000);
     } else {
       setHasMoreValue(false);
     }
@@ -193,15 +195,17 @@ const Pokedex = () => {
             next={handleOnRowsScrollEnd}
             hasMore={hasMoreValue}
             scrollThreshold={1}
-            loader={<LinearProgress />}
+            loader={
+              <LinearProgress
+                color="warning"
+                style={{ marginBottom: "25px" }}
+              />
+            }
             // Let's get rid of second scroll bar
             style={{ overflow: "unset" }}
           >
             <Grid container spacing={4} className={classes.pokemonCardsArea}>
-              {scrollData.map(
-                (pokemon, index) =>
-                  pokemon.name.includes(searchInputValue) && renderCards(index)
-              )}
+              {scrollData.map((pokemon, index) => renderCards(index))}
             </Grid>
           </InfiniteScroll>
         </>
