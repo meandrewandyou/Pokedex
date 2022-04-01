@@ -7,26 +7,36 @@ import {
   Button,
   InputAdornment,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import { setUser, setToken } from "../../redux/slices/userSlice";
 const useStyles = makeStyles({
   loginButton: {
     marginTop: "100px",
   },
+  errMessage: {
+    color: "red",
+  },
 });
 
-const Login = () => {
+const Login = (props) => {
+  const { closeOnSubmit } = props;
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const [user, setUser] = useState({
-    userName: "",
+  const [userInput, setUserInput] = useState({
+    username: "",
     password: "",
   });
+  // We'll use this state to show err message if we don't get response data from server
+  // while logging in
+  const [errMsg, setErrMsg] = useState(false);
   const handleSetUser = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUserInput({ ...userInput, [name]: value });
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -38,22 +48,25 @@ const Login = () => {
       <Card>
         <CardContent>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              console.log(user);
-              axios
-                .post("http://localhost:4000/user/login", user)
-                .then((response) => {
-                  console.log(response.data);
-                })
+              const response = await axios
+                .post("http://localhost:4000/user/login", userInput)
                 .catch((err) => {
                   console.log(err);
                 });
+              if (response) {
+                dispatch(setToken(response.data));
+                dispatch(setUser(userInput.username));
+                closeOnSubmit();
+              } else {
+                setErrMsg(true);
+              }
             }}
           >
             <FormControl fullWidth>
               <TextField
-                name="userName"
+                name="username"
                 onChange={handleSetUser}
                 required
                 label="Username"
@@ -82,6 +95,11 @@ const Login = () => {
                   ),
                 }}
               />
+              {errMsg && (
+                <Typography className={classes.errMessage}>
+                  Username or password is incorrect! Try again.
+                </Typography>
+              )}
               <Button className={classes.loginButton} type="submit">
                 Login
               </Button>

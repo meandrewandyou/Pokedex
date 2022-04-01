@@ -45,6 +45,11 @@ const useStyles = makeStyles({
     marginTop: "-100px",
     marginLeft: "-100px",
   },
+  pokemonPicture: {
+    borderRadius: "50%",
+    backgroundColor: "#F2F5C8",
+    maxWidth: "90%",
+  },
 });
 
 const Pokedex = () => {
@@ -130,13 +135,7 @@ const Pokedex = () => {
             <Typography>{"Name: " + capitalize(`${name}`)}</Typography>
             <Typography>{`ID: ${id}`}</Typography>
             <CardMedia>
-              <div
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "#F2F5C8",
-                  maxWidth: "90%",
-                }}
-              >
+              <div className={classes.pokemonPicture}>
                 <img className={classes.pokemonImage} alt="" src={imgUrl} />
               </div>
             </CardMedia>
@@ -158,7 +157,7 @@ const Pokedex = () => {
                 dispatch(setValue(""));
               }}
             >
-              Show me more
+              More
             </Button>
           </CardContent>
         </Card>

@@ -1,12 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
 import pokemonSearchSlice from "./slices/pokemonSearch";
+import userSlice from "./slices/userSlice";
 
 // Looks like combineReducers is kinda deprecated. That's how we combine reducers via redux 
-// toolkit now.
+// toolkit nowdays.
 
 const store = configureStore({
 reducer: {
-    pokemonSearch: pokemonSearchSlice
+    pokemonSearch: pokemonSearchSlice,
+    user: userSlice
 }
 });
 

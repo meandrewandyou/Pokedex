@@ -7,7 +7,7 @@ import Register from "./Register";
 import { Typography } from "@mui/material";
 
 const LoginForm = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [typeOfCard, setTypeOfCard] = useState();
 
   const loginButtonPushed = () => {
@@ -23,6 +23,7 @@ const LoginForm = () => {
   };
   const handleClose = () => {
     setOpen(false);
+    console.log("handleClose activated");
   };
 
   return (
@@ -41,7 +42,7 @@ const LoginForm = () => {
         >
           I wanna...
         </Typography>
-        <DialogContent dividers>
+        <DialogContent>
           <Button
             onClick={loginButtonPushed}
             variant={typeOfCard === "login" ? "contained" : "outlined"}
@@ -57,8 +58,10 @@ const LoginForm = () => {
           <Button color="error" onClick={handleClose} variant="outlined">
             Just show me pokemons already!
           </Button>
-          {typeOfCard === "login" && <Login />}
-          {typeOfCard === "register" && <Register />}
+          {typeOfCard === "login" && <Login closeOnSubmit={handleClose} />}
+          {typeOfCard === "register" && (
+            <Register closeOnSubmit={handleClose} />
+          )}
         </DialogContent>
       </Dialog>
     </div>

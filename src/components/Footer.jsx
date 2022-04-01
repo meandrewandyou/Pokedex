@@ -9,9 +9,6 @@ const useStyles = makeStyles({
     bottom: 0,
     right: 0,
     textAlign: "right",
-    signLink: {
-      fontSize: "2px",
-    },
   },
 });
 const Footer = () => {
@@ -21,7 +18,6 @@ const Footer = () => {
     <>
       <footer className={classes.footerDiv}>
         <Link
-          className={classes.signLink}
           href="https://github.com/meandrewandyou"
           underline="hover"
           variant="body1"

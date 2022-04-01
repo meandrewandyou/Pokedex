@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
-    userName:{
+    username:{
         type: String,
         unique: true
     },
-    email:{
+    mail:{
         type: String,
         unique: true
     },
@@ -16,6 +16,9 @@ const userSchema = new Schema({
     favPokemons: [],
     messages: []
 });
+
+
+
 
 
 const User = new model("user" ,userSchema);

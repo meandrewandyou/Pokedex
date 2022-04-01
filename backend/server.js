@@ -1,20 +1,28 @@
 // ES6 imports work cause of ESM module 
-
+// -------------------------------Imports-------------------------------------------------
 import express from "express";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoutes";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 require("dotenv").config();
+// ---------------------------------------------------------------------------------------
 const corsOptions = {
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
+    credentials: true,
+    optionSuccessStatus:200
+
 };
 const app = express();
+// -----------------------------Middlewares----------------------------------------------
 app.use(express.json());
 app.use(cors(corsOptions));
 
-// Import of routes
+//--------------------------------------Import of routes-----------------------------------
 
 app.use("/user/", userRoute);
+
+// -----------------------------------------------------------------------------------------
 
 
 const start = async () =>{

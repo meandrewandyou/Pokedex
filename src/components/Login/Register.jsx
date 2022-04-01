@@ -7,20 +7,34 @@ import {
   Button,
   InputAdornment,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser, setToken } from "../../redux/slices/userSlice";
+import { makeStyles } from "@mui/styles";
 
-const Register = () => {
+const useStyles = makeStyles({
+  errorMessage: {
+    color: "red",
+  },
+});
+
+const Register = (props) => {
+  const dispatch = useDispatch();
+  const { closeOnSubmit } = props;
   const [showPassword, setShowPassword] = useState(false);
-  const [user, setUser] = useState({
-    email: "",
-    userName: "",
+  const [errMsg, setErrMsg] = useState(false);
+  const [potentialUser, setPotentialUser] = useState({
+    mail: "",
+    username: "",
     password: "",
   });
+  const classes = useStyles();
   const handleSetUser = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setPotentialUser({ ...potentialUser, [name]: value });
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -30,22 +44,25 @@ const Register = () => {
       <Card>
         <CardContent>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              console.log(user);
-              axios
-                .post("http://localhost:4000/user/register", user)
-                .then((response) => {
-                  console.log(response.data);
-                })
+              const response = await axios
+                .post("http://localhost:4000/user/register", potentialUser)
                 .catch((err) => {
                   console.log(err);
                 });
+              if (response) {
+                dispatch(setUser(potentialUser.username));
+                dispatch(setToken(response.data));
+                closeOnSubmit();
+              } else {
+                setErrMsg(true);
+              }
             }}
           >
             <FormControl fullWidth>
               <TextField
-                name="email"
+                name="mail"
                 onChange={handleSetUser}
                 required
                 type="email"
@@ -54,7 +71,7 @@ const Register = () => {
                 InputLabelProps={{ style: { color: "#E3BEC6" } }}
               />
               <TextField
-                name="userName"
+                name="username"
                 onChange={handleSetUser}
                 required
                 label="Username"
@@ -83,6 +100,12 @@ const Register = () => {
                   ),
                 }}
               />
+              {errMsg && (
+                <Typography className={classes.errorMessage}>
+                  Looks like user with username and/or email like this already
+                  exists.
+                </Typography>
+              )}
               <Button type="submit">Submit</Button>
             </FormControl>
           </form>
