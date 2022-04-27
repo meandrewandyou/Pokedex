@@ -5,19 +5,18 @@ import {
   CardMedia,
   Grid,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import { React, useEffect } from "react";
-import { useState } from "react";
+  CircularProgress,
+  Button,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import colors from "../constatnts/colors";
-import { CircularProgress, Button } from "@mui/material";
+import colors from "../constants/colors";
 const useStyles = makeStyles({
   pokemonCard: {
     width: "450px",
     marginTop: "3em",
-    borderRadius: "25px 100px",
   },
   progress: {
     position: "fixed",
@@ -66,7 +65,10 @@ const Pokemon = () => {
           <Grid item xs={6}>
             <Card
               className={classes.pokemonCard}
-              style={{ backgroundColor: colors[mainType] }}
+              style={{
+                backgroundColor: colors[mainType],
+                borderRadius: "25px 100px",
+              }}
             >
               <CardContent align="center">
                 <Typography align="center" variant="h2">

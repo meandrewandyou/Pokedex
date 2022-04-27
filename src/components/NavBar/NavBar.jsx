@@ -1,17 +1,23 @@
-import React from "react";
-import { Toolbar, AppBar, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import React, { useState } from "react";
+import {
+  Toolbar,
+  AppBar,
+  Typography,
+  Menu,
+  MenuItem,
+  IconButton,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import SearchInput from "./SearchInput";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoginForm from "../Login/LoginForm";
-import { Button, Link } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { setUser, setToken } from "../../redux/slices/userSlice";
-const useStyles = makeStyles((theme) => ({
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
+import { AccountCircle } from "@mui/icons-material";
+const useStyles = makeStyles({
   siteHeader: {
-    fontFamily: "Pokemon solid",
     color: "#F94892",
+    "&:hover": { cursor: "pointer" },
   },
   toolBar: {
     padding: "10px",
@@ -19,23 +25,23 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     margin: "5px",
   },
-  loginFormStyle: {
-    display: "flex",
-    marginBottom: "-30px",
-    position: "relative",
-    marginLeft: "auto",
-    marginRight: "20px",
-  },
-}));
+});
 
 const NavBar = () => {
   const user = useSelector((state) => state.user);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
   // Let's track what page user currnetly on, to render SearchInput where it's necessary
   const location = useLocation();
 
+  const handleMenu = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <AppBar position="sticky" spacing={2}>
@@ -43,33 +49,90 @@ const NavBar = () => {
           style={{ backgroundColor: "#219F94" }}
           className={classes.toolBar}
         >
-          <Typography className={classes.siteHeader} variant="h3">
+          <Typography
+            onClick={() => {
+              navigate("/");
+            }}
+            style={{ fontFamily: "Pokemon solid" }}
+            className={classes.siteHeader}
+            variant="h3"
+          >
             PokeDex
           </Typography>
-          {user.loggedUser && (
-            <Link
-              onClick={() => {
-                navigate(`/users/${user.loggedUser}`);
+          <div style={{ marginLeft: "auto" }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              sx={{ color: user.loggedUser ? "#EBD8C3" : "#FFF6EA" }}
+            >
+              <AccountCircle style={{ fontSize: "60px" }} />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
               }}
-              underline="hover"
-            >{`Hello there ${user.loggedUser}!`}</Link>
-          )}
-          <div className={classes.loginFormStyle}>
-            {!user.loggedUser && <LoginForm />}
-          </div>
-          <div className={classes.loginFormStyle}>
-            {user.loggedUser && (
-              <Button
-                onClick={() => {
-                  dispatch(setUser(null));
-                  dispatch(setToken(null));
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMenu}
+            >
+              <MenuItem
+                sx={{
+                  ":hover": {
+                    bgcolor: "orange",
+                    color: "white",
+                  },
                 }}
-                color="warning"
-                variant="outlined"
+                onClick={() => {
+                  navigate(`/masters`);
+                  handleCloseMenu();
+                }}
               >
-                Log out
-              </Button>
-            )}
+                Masters
+              </MenuItem>
+              {user.loggedUser && (
+                <MenuItem
+                  sx={{
+                    ":hover": {
+                      bgcolor: "#4D96FF",
+                      color: "white",
+                    },
+                  }}
+                  onClick={() => {
+                    navigate(`/users/${user.loggedUser.username}`);
+                    handleCloseMenu();
+                  }}
+                >
+                  My profile
+                </MenuItem>
+              )}
+              {!user.loggedUser && <LoginForm closeMenu={handleCloseMenu} />}
+              {user.loggedUser && (
+                <MenuItem
+                  sx={{
+                    ":hover": {
+                      bgcolor: "#FD5D5D",
+                      color: "white",
+                    },
+                  }}
+                  onClick={() => {
+                    dispatch(setUser(null));
+                    handleCloseMenu();
+                  }}
+                >
+                  Log out
+                </MenuItem>
+              )}
+            </Menu>
           </div>
 
           {/* Lets check the exact path and decide if we should render SearchInput.

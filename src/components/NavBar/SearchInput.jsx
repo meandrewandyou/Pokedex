@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField } from "@mui/material";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { setValue } from "../../redux/slices/pokemonSearch";
 import { useDispatch } from "react-redux";

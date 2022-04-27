@@ -7,11 +7,10 @@ require("dotenv").config();
 const router = Router();
 const saltRounds = 12;
 
-// ---------------------Verify token function--------------------------------------------
+// ---------------------Verify token middleware function--------------------------------------------
 const verifyToken = (req, res, next) =>{
 
 const authHeader = req.headers.authorization;
-console.log(authHeader);
 
 if (authHeader){
 const token = authHeader.split(" ")[1];
@@ -47,7 +46,11 @@ user.save((err, savedUser)=>{
 err && console.log(err);
 if (savedUser){
   const accessToken = jwt.sign({username: req.body.username}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
-  res.send(accessToken)
+  res.send({           
+    username: savedUser.username,
+    favPokemons: savedUser.favPokemons,
+    accessToken: accessToken            
+})
 }else{
   res.status(409).json("Username and/or email already taken")
 }
@@ -75,7 +78,11 @@ try {
 console.log(err)} else {
         if (result) {
           const accessToken = jwt.sign({username: foundUser.username}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
-          res.send(accessToken)
+          res.send({           
+              username: foundUser.username,
+              favPokemons: foundUser.favPokemons,
+              accessToken: accessToken            
+          })
         } else {
           res.status(401).json("Incorrect password");
         }
@@ -101,11 +108,59 @@ router.post("/delete/:username", verifyToken, (req, res)=>{
 
 router.get("/findUser/:user", (req,res)=>{
   const user = req.params.user;
-  User.findOne({username: user}, (err, foundUser)=>{
-    err && console.log(err);
-    foundUser ? res.send(true) : res.send(false)
-  })
+  if (user === "fullList") {
+    User.find({}, (err, users) =>{
+      const fullList = [];
+      users.forEach((user)=>{
+        fullList.push(user.username)
+      });
+      res.send(fullList)
+    })
+  } else {
+    User.findOne({username: user}, (err, foundUser)=>{
+      err && console.log(err);
+      foundUser ? res.send({
+        result: true,
+        favPokemons : foundUser.favPokemons
+      }) : res.send({
+        result: false
+      })
+    })
+  }
+  
 })
+
+router.post("/like", verifyToken, (req, res)=>{
+const {loggedUser, favPokemon} = req.body;
+User.findOne({username: loggedUser.username}, (err,user)=>{
+  err && console.log(err);
+ const pokemonAlreadyExists = user.favPokemons.find(pokemon=>pokemon.name === favPokemon.name);
+ if (pokemonAlreadyExists) {
+   res.send("You already have that pokemon");
+ } else {
+  user.favPokemons.push(favPokemon);
+  user.save((err, savedUser)=>{
+    err && console.log(err);
+    res.send(savedUser.favPokemons);
+  });
+ }
+})
+ });
+
+ router.post("/unlike", verifyToken,(req, res)=>{
+  const {loggedUser, favPokemon} = req.body;
+ 
+ User.findOneAndUpdate({username: loggedUser.username},{
+    $pull: {favPokemons : favPokemon}
+  }, {new: true}, (err,user)=>{
+    err && console.log(err);
+      res.send(user.favPokemons)
+  })
+   });
+
+
+ 
+
 
 
 export default router;

@@ -1,12 +1,30 @@
 <h1>Still Demo of the Pokedex.</h1>
 
+<h2>Instruction:</h2>
+<ul>
+<li>Cd to the root folder, "npm i".</li>
+<li>Cd to the root folder/backend, "npm i".</li>
+<li>Create your own .env file in root/backend and give values to process.env constants. Or just use strings. Make sure DB've been connected successfully (btw server won't start without connected db).</li>
+<li>Cd to the root folder, "npm start".</li>
+<li>Cd to the root folder/backend, "npm start".</li>
+<li>Click around.</li>
+</ul>
+
 <h3>Changelog:</h3>
+
+<h5>v 0.06</h5>
+<ul>
+<li>Add pokemons to favorites, remove from favorites if you don't love em anymore.</li>
+<li>List of all registered pokemon masters added. Look what they got in their pockets.</li>
+<li>Redux-persist middleware added. Not to lose redux state data on refresh or manual navigation from adress bar.</li>
+<li>Minor visual changes.</li>
+</ul>
 
 <h5>v 0.05</h5>
 <ul>
 <li>I've chosen not to proceed with sessions and passport authorization, as I planned in the beginning, and decided to use the technology the big guys use, sooo..... JWT authorization is on the board🎉</li>
 <li>Create new user, log in, get your authorization token, go to your personal page,  be able to make authorized request (actually, in this version there's only only one request like this - delete user)</li>
-<li>P.S: It's still a test version, so functionality first. All the ugly stuff will be fixed after I implement few ideas I have. Click around)</li>
+<li>P.S: It's still a test version, so functionality first. All the ugly stuff will be fixed after I implement few more ideas I have.</li>
 </ul>
 
 <h5>v 0.04 </h5>

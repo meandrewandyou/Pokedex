@@ -4,9 +4,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Login from "./Login";
 import Register from "./Register";
-import { Typography } from "@mui/material";
+import { Typography, MenuItem } from "@mui/material";
 
-const LoginForm = () => {
+const LoginForm = (props) => {
+  const { closeMenu } = props;
   const [open, setOpen] = useState(false);
   const [typeOfCard, setTypeOfCard] = useState();
 
@@ -28,9 +29,20 @@ const LoginForm = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Button variant="outlined" color="success" onClick={handleClickOpen}>
+      <MenuItem
+        sx={{
+          ":hover": {
+            bgcolor: "#4D96FF",
+            color: "white",
+          },
+        }}
+        onClick={() => {
+          handleClickOpen();
+          closeMenu();
+        }}
+      >
         Register/Login
-      </Button>
+      </MenuItem>
 
       <Dialog onClose={handleClose} open={open}>
         <Typography

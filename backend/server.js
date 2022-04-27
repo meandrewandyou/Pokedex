@@ -4,7 +4,6 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoutes";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 require("dotenv").config();
 // ---------------------------------------------------------------------------------------
 const corsOptions = {

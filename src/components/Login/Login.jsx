@@ -13,7 +13,7 @@ import { makeStyles } from "@mui/styles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser, setToken } from "../../redux/slices/userSlice";
+import { setUser } from "../../redux/slices/userSlice";
 const useStyles = makeStyles({
   loginButton: {
     marginTop: "100px",
@@ -56,9 +56,12 @@ const Login = (props) => {
                   console.log(err);
                 });
               if (response) {
-                dispatch(setToken(response.data));
-                dispatch(setUser(userInput.username));
-                closeOnSubmit();
+                dispatch(
+                  setUser(response.data, () => {
+                    closeOnSubmit();
+                    console.log(response.data);
+                  })
+                );
               } else {
                 setErrMsg(true);
               }

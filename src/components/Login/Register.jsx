@@ -12,7 +12,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser, setToken } from "../../redux/slices/userSlice";
+import { setUser } from "../../redux/slices/userSlice";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
@@ -52,9 +52,11 @@ const Register = (props) => {
                   console.log(err);
                 });
               if (response) {
-                dispatch(setUser(potentialUser.username));
-                dispatch(setToken(response.data));
-                closeOnSubmit();
+                dispatch(
+                  setUser(response.data, () => {
+                    closeOnSubmit();
+                  })
+                );
               } else {
                 setErrMsg(true);
               }
