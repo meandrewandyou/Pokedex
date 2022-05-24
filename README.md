@@ -1,16 +1,14 @@
 <h1>Still Demo of the Pokedex.</h1>
 
-<h2>Instruction:</h2>
-<ul>
-<li>Cd to the root folder, "npm i".</li>
-<li>Cd to the root folder/backend, "npm i".</li>
-<li>Create your own .env file in root/backend and give values to process.env constants. Or just use strings. Make sure DB've been connected successfully (btw server won't start without connected db).</li>
-<li>Cd to the root folder, "npm start".</li>
-<li>Cd to the root folder/backend, "npm start".</li>
-<li>Click around.</li>
-</ul>
-
 <h3>Changelog:</h3>
+
+<h5>v 0.07</h5>
+<ul>
+<li>Message board added.</li>
+<li>Navigation buttons added.</li>
+<li>Refresh tokens added. Not sure it's the way it should look like, but after reading and watching vids I've just decided to create it myself. I'm not sure about security levels of it, but at least it works).</li>
+<li>Little bit of visaul impovements.</li>
+</ul>
 
 <h5>v 0.06</h5>
 <ul>
