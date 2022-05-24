@@ -30,7 +30,7 @@ const start = async () =>{
     try {
         await mongoose.connect(process.env.MONGOOSE_PATH, {dbName: "PokedexDB"});
         console.log("DB connected");
-        app.listen(PORT, ()=>{console.log(`Server started on port ${process.env.PORT}`)})
+        app.listen(PORT, ()=>{console.log(`Server started on port ${PORT}`)})
     } catch (error) {
         console.log(error);
     }
