@@ -2,6 +2,15 @@
 
 <h4>There were a lot of commits cause I've changed the structure of the folder to host this app on Heroku, forgot to add new .gitignore and as a result pushed .env and node_modules to github. So all that commits is a result of me trying to fix things) And looks like the operation was successfull.</h4>
 
+<h2>OK, all jokes aside. Now it's really live! So... If you are out there... if anyone is out there... I can provide food, I can provide shelter, I can provide sec.. Ok, just click on the link in the About section and test this app)</h2>
+
+<h3>Changelog:</h3>
+
+<h5>v 0.09</h5>
+<ul>
+<li>Wasn't that Heroku ready, so some fixes have been made. Now it really works)</li>
+</ul>
+
 <h3>Changelog:</h3>
 
 <h5>v 0.08</h5>
