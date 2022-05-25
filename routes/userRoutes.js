@@ -15,13 +15,10 @@ const authHeader = req.headers.authorization;
 
 if (authHeader){
 const token = authHeader.split(" ")[1];
-// console.log(token);
 jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user)=>{
   if(err){
 User.findOne({username: req.body.username}, (err, foundUser)=>{
   err && console.log(err);
-  console.log(token);
-  console.log(foundUser.accessToken);
   if(token === foundUser.accessToken){
     jwt.verify(foundUser.refreshToken, process.env.JWT_REFRESH_SECRET_KEY, (err,refreshUser)=>{
       if(err){
@@ -67,7 +64,7 @@ router.post("/register", async (req,res)=>{
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
     const accessToken = jwt.sign({username: req.body.username}, process.env.JWT_SECRET_KEY, {expiresIn: "30s"});
-    const refreshToken = jwt.sign({username: req.body.username}, process.env.JWT_REFRESH_SECRET_KEY, {expiresIn: "1h"});
+    const refreshToken = jwt.sign({username: req.body.username}, process.env.JWT_REFRESH_SECRET_KEY, {expiresIn: "1d"});
 
 
 const user = new User({
@@ -117,7 +114,7 @@ console.log(err)
 } else {
         if (result) {
           const accessToken = jwt.sign({username: foundUser.username}, process.env.JWT_SECRET_KEY, {expiresIn: "30s"});
-          const refreshToken = jwt.sign({username: req.body.username}, process.env.JWT_REFRESH_SECRET_KEY, {expiresIn: "1h"});
+          const refreshToken = jwt.sign({username: req.body.username}, process.env.JWT_REFRESH_SECRET_KEY, {expiresIn: "1d"});
 // Login process could be done with findOneAndUpdate, but I test things out here)
 // Not that beautiful, but still works. BTW spread operator crashes code, so simple assignments used.
           foundUser.refreshToken = refreshToken;

@@ -4,6 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoutes";
 import cors from "cors";
+import path from "path";
 require("dotenv").config();
 // ---------------------------------------------------------------------------------------
 const PORT = process.env.PORT || 4000;
@@ -18,8 +19,8 @@ const app = express();
 // -----------------------------Middlewares----------------------------------------------
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(express.static(path.join(__dirname, "client", "build")))
 
-//--------------------------------------Import of routes-----------------------------------
 
 app.use("/user/", userRoute);
 
@@ -36,5 +37,8 @@ const start = async () =>{
     }
 }
 
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 start();

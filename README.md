@@ -1,6 +1,13 @@
-<h1>Still Demo of the Pokedex.</h1>
+<h1>Pokedex. LIVE!</h1>
+
+<h4>There were a lot of commits cause I've changed the structure of the folder to host this app on Heroku, forgot to add new .gitignore and as a result pushed .env and node_modules to github. So all that commits is a result of me trying to fix things) And looks like the operation was successfull.</h4>
 
 <h3>Changelog:</h3>
+
+<h5>v 0.08</h5>
+<ul>
+<li>Heroku ready!</li>
+</ul>
 
 <h5>v 0.07</h5>
 <ul>
