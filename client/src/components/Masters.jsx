@@ -17,7 +17,7 @@ const Masters = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/user/findUser/fullList`)
+      .get(`user/findUser/fullList`)
       .then((response) => {
         setFullList(response.data);
       })

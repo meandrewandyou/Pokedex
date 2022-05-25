@@ -34,7 +34,7 @@ const UserInfo = () => {
     };
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/delete/${loggedUser.username}`,
+        `user/delete/${loggedUser.username}`,
         { username: loggedUser.username },
         {
           headers: headers,
@@ -54,11 +54,9 @@ const UserInfo = () => {
   };
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:4000/user/findUser/${user}`)
-      .then((response) => {
-        setFoundUser(response.data);
-      });
+    axios.get(`user/findUser/${user}`).then((response) => {
+      setFoundUser(response.data);
+    });
   });
   return (
     <>

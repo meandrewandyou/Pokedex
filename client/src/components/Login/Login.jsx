@@ -51,7 +51,7 @@ const Login = (props) => {
             onSubmit={async (e) => {
               e.preventDefault();
               const response = await axios
-                .post("http://localhost:4000/user/login", userInput)
+                .post("user/login", userInput)
                 .catch((err) => {
                   console.log(err);
                 });

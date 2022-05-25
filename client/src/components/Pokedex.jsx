@@ -88,9 +88,7 @@ const Pokedex = () => {
         setPokemonData(loggedUser.favPokemons);
         setScrollData(loggedUser.favPokemons.slice(0, 8));
       } else {
-        const response = await axios.get(
-          `http://localhost:4000/user/findUser/${user}`
-        );
+        const response = await axios.get(`user/findUser/${user}`);
         console.log(response.data);
         setPokemonData(response.data.favPokemons);
         setScrollData(response.data.favPokemons.slice(0, 8));

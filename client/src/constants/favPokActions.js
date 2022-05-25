@@ -12,7 +12,7 @@ const likeThePokemon = (dataToSend, loggedUser, dispatch, setUser, setFav ) => {
       Authorization: `Bearer ${loggedUser.accessToken}`,
     };
     axios
-      .post(`http://localhost:4000/user/like`, dataToSend, {
+      .post(`user/like`, dataToSend, {
         headers: headers,
       })
       .then((response) => {
@@ -27,7 +27,7 @@ const likeThePokemon = (dataToSend, loggedUser, dispatch, setUser, setFav ) => {
       Authorization: `Bearer ${loggedUser.accessToken}`,
     };
     axios
-      .post(`http://localhost:4000/user/unlike`, dataToSend, {
+      .post(`user/unlike`, dataToSend, {
         headers: headers,
       })
       .then((response) => {

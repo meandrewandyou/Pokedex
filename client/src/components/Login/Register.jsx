@@ -54,7 +54,7 @@ const Register = (props) => {
             onSubmit={async (e) => {
               e.preventDefault();
               const response = await axios
-                .post("http://localhost:4000/user/register", potentialUser)
+                .post("user/register", potentialUser)
                 .catch((err) => {
                   console.log(err);
                 });
