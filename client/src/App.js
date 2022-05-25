@@ -9,9 +9,14 @@ import Masters from "./components/Masters";
 import MessageBoard from "./components/MessageBoard";
 import { createTheme, ThemeProvider } from "@mui/material";
 import NavButtons from "./components/NavButtons";
+import axios from "axios";
 
 
 function App() {
+
+  axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? "http://localhost:4000/" : "https://pokedex-for-everybody.herokuapp.com/";
+  
+
   const theme = createTheme({
     typography: {
       fontFamily: [

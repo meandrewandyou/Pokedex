@@ -44,7 +44,7 @@ const RenderMessages = (props) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/${mssg.author}/deletePost`,
+        `/user/${mssg.author}/deletePost`,
         { mssg, username: loggedUser.username },
         { headers: headers }
       );
@@ -69,7 +69,7 @@ const RenderMessages = (props) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/${mssg.author}/editPost`,
+        `user/${mssg.author}/editPost`,
         { mssg, newMessageText: editedMessage, username: loggedUser.username },
         { headers: headers }
       );
@@ -101,7 +101,7 @@ const RenderMessages = (props) => {
     };
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/${mssg.author}/handleLikePost`,
+        `user/${mssg.author}/handleLikePost`,
         { mssg, whoLiked: loggedUser.username, username: loggedUser.username },
         { headers: headers }
       );

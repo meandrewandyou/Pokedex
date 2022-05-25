@@ -19,9 +19,6 @@ const MessageBoard = () => {
   const loggedUser = useSelector((state) => state.user.loggedUser);
   const dispatch = useDispatch();
 
-  const BASEURL =
-    "https://pokedex-for-everybody.herokuapp.com" || "http://localhost:4000";
-
   const submitMessage = (e) => {
     e.preventDefault();
     const newMessage = {
@@ -32,7 +29,7 @@ const MessageBoard = () => {
     };
     axios
       .post(
-        `http://localhost:4000/user/${loggedUser.username}/addMessage`,
+        `user/${loggedUser.username}/addMessage`,
         { newMessage, username: loggedUser.username },
         {
           headers: {
@@ -54,8 +51,7 @@ const MessageBoard = () => {
   };
 
   const getMessages = async () => {
-    console.log(process.env.PORT);
-    const response = await axios.get(`${BASEURL}/user/getMessages`);
+    const response = await axios.get(`user/getMessages`);
     setArrayOfMessages(response.data);
   };
 
