@@ -20,7 +20,7 @@ const MessageBoard = () => {
   const dispatch = useDispatch();
 
   const BASEURL =
-    "http://localhost:4000" || "https://pokedex-for-everybody.herokuapp.com";
+    "https://pokedex-for-everybody.herokuapp.com" || "http://localhost:4000";
 
   const submitMessage = (e) => {
     e.preventDefault();
@@ -54,6 +54,7 @@ const MessageBoard = () => {
   };
 
   const getMessages = async () => {
+    console.log(process.env.PORT);
     const response = await axios.get(`${BASEURL}/user/getMessages`);
     setArrayOfMessages(response.data);
   };
